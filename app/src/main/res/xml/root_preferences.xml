@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/settings_title1">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="check_box_preference_Wind"
+            android:title="@string/windPreference" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="check_box_preference_Pressure"
+            android:title="@string/pressurePreference" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="check_box_preference_Humidity"
+            android:title="@string/humidityPreference" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

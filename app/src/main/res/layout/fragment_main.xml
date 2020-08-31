@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/side_nav_bar"
+    tools:context=".MainActivity">
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSendWeather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="@string/sendweather"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.898"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tViewWeather" />
+
+    <ImageView
+        android:id="@+id/iViewIcons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/icon"
+        android:src="@drawable/sunny1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.409"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tViewCiy" />
+
+    <ImageView
+        android:id="@+id/iViewCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/settings"
+        app:layout_constraintBottom_toBottomOf="@+id/tViewCiy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tViewCiy"
+        app:srcCompat="@drawable/city" />
+
+    <TextView
+        android:id="@+id/tViewTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/sp_16"
+        android:textAlignment="center"
+        android:textColor="@color/cardview_light_background_main"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/iViewIcons"
+        app:layout_constraintStart_toEndOf="@+id/iViewIcons"
+        app:layout_constraintTop_toTopOf="@+id/iViewIcons"
+        app:layout_constraintVertical_bias="0.473" />
+
+    <TextView
+        android:id="@+id/tViewWeather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/now_sunny"
+        android:textColor="@color/cardview_light_background_main"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/tViewTemperature"
+        app:layout_constraintStart_toStartOf="@+id/iViewIcons"
+        app:layout_constraintTop_toBottomOf="@+id/iViewIcons" />
+
+    <TextView
+        android:id="@+id/textViewWind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:text="@string/wind"
+        android:textColor="@color/cardview_light_background_main"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tViewWeather" />
+
+    <TextView
+        android:id="@+id/tViewPressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:text="@string/pressure"
+        android:textColor="@color/cardview_light_background_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tViewWeather" />
+
+    <TextView
+        android:id="@+id/tViewHumidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:text="@string/humidity"
+        android:textColor="@color/cardview_light_background_main"
+        app:layout_constraintStart_toStartOf="@+id/textViewWind"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWind" />
+
+    <TextView
+        android:id="@+id/tViewCiy"
+        android:layout_width="276dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center"
+        android:textColor="@color/cardview_light_background_main"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iViewCity"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
