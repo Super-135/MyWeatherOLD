@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Супер погода</string>
+    <string name="navigation_drawer_open">Открыть панель навигации</string>
+    <string name="navigation_drawer_close">Закрыть панель навигации</string>
+    <string name="nav_header_title">Твоя погода</string>
+    <string name="nav_header_desc">Заголовок панели навигации</string>
+    <string name="action_settings">Настройки</string>
+    <string name="moscow">Москва</string>
+    <string name="now_sunny">Сейчас - Солнечно</string>
+    <string name="wind">Ветер</string>
+    <string name="wind1">м/с</string>
+    <string name="pressure">Давление</string>
+    <string name="pressure1">мм р.с.</string>
+    <string name="humidity">Влажность</string>
+    <string name="humidity1">%</string>
+    <string name="water">Т. воды 17 C</string>
+    <string name="menu_home">Погода</string>
+    <string name="menu_forecast_for_the_week">Прогноз на неделю</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="icon">Солнечно</string>
+    <string name="current_place">Текущее место</string>
+    <string name="favourites">Избранное</string>
+    <string name="select_city"> + Выберите город</string>
+    <string name="activity_Settings">Панель настроек</string>
+    <string name="title_activity_settings">Панель настроек</string>
+
+    <!-- Preference Titles -->
+    <string name="settings_title1">Настройки пользователя</string>
+
+    <string name="windPreference">Отображать ветер</string>
+    <string name="pressurePreference">Отображать давление</string>
+    <string name="waterPreference">Отображать т. воды</string>
+    <string name="humidityPreference">Отображать влажность</string>
+    <string name="settings">Настройки</string>
+    <string name="add_5_degrees">Добавить 5 градусов</string>
+    <string name="sendweather">Отправить погоду</string>
+    <string name="sendweatherMsg">Отправляю свою погоду</string>
+    <string name="snackbar_text">Временно недоступно. Идут работы</string>
+    <string name="server_unavailable">Сервер недоступен</string>
+    <string name="menu_about_the_developer">О разработчике</string>
+    <string name="share_the_weather">Поделиться погодой</string>
+    <string name="hello_blank_fragment">Привет! Я программирую на андроид.</string>
+
+
+</resources>
