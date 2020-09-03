@@ -41,6 +41,9 @@
     <string name="menu_about_the_developer">О разработчике</string>
     <string name="share_the_weather">Поделиться погодой</string>
     <string name="hello_blank_fragment">Привет! Я программирую на андроид.</string>
+    <string name="title_alert_dialog">Ошибка!</string>
+    <string name="message_allert_dialog">Нет доступа к интернету</string>
+    <string name="button_ok">ОК</string>
 
 
 </resources>

@@ -1,5 +1,6 @@
 package com.example.myweather.ui.home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,11 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.myweather.R;
+import com.example.myweather.Thermometer;
+import com.example.myweather.model.WeatherRequest;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.example.myweather.R;
-import com.example.myweather.model.WeatherRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,10 +29,12 @@ import javax.net.ssl.HttpsURLConnection;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 public class FragmentMain extends Fragment {
 
+    private Thermometer thermometerView;
     private TextView textViewWind;
     private TextView tViewHumidity;
     private TextView tViewPressure;
@@ -74,7 +78,6 @@ public class FragmentMain extends Fragment {
                         urlConnection.setReadTimeout(10000); // установка таймаута - 10 000 миллисекунд
                         BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())); // читаем  данные в поток
                         String result = getLines(in);
-                        // преобразование данных запроса в модель
                         Gson gson = new Gson();
                         final WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
                         // Возвращаемся к основному потоку
@@ -87,6 +90,12 @@ public class FragmentMain extends Fragment {
                     } catch (Exception e) {
                         Log.e(TAG, "Fail connection", e);
                         e.printStackTrace();
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                clickAlertDialogNoInternetAccess();
+                            }
+                        });
                     } finally {
                         if (null != urlConnection) {
                             urlConnection.disconnect();
@@ -99,6 +108,22 @@ public class FragmentMain extends Fragment {
             e.printStackTrace();
         }
     }
+
+
+    private void clickAlertDialogNoInternetAccess() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(FragmentMain.this.getContext());
+        builder.setTitle(R.string.title_alert_dialog)
+                .setMessage(R.string.message_allert_dialog)
+                .setIcon(R.drawable.wifioff)
+                .setPositiveButton(R.string.button_ok,
+                        new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 
     private String getLines(BufferedReader in) {
         StringBuilder rawData = new StringBuilder(1024);
@@ -123,6 +148,7 @@ public class FragmentMain extends Fragment {
     private void displayWeather(WeatherRequest weatherRequest){
         String temperatureValue = String.format(Locale.getDefault(), "+%.0f", weatherRequest.getMain().getTemp());
         tViewTemperature.setText(temperatureValue);
+        thermometerView.setLevel((int) (50+weatherRequest.getMain().getTemp()));
         tViewCiy.setText(weatherRequest.getName());
         tViewWeather.setText(weatherRequest.getWeather()[0].getDescription());
         String pressureText = getString(R.string.pressure)+" "
@@ -171,6 +197,7 @@ public class FragmentMain extends Fragment {
     private void setOniViewCurrent() {
         btnSendWeather.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
@@ -190,5 +217,6 @@ public class FragmentMain extends Fragment {
         tViewHumidity = view.findViewById(R.id.tViewHumidity);
         textViewWind = view.findViewById(R.id.textViewWind);
         iViewIcons = view.findViewById(R.id.iViewIcons);
+        thermometerView = view.findViewById(R.id.thermometerView);
     }
 }
