@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.myweather.R;
+import com.example.myweather.Thermometer;
 import com.example.myweather.model.WeatherRequest;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,6 +34,7 @@ import androidx.fragment.app.Fragment;
 
 public class FragmentMain extends Fragment {
 
+    private Thermometer thermometerView;
     private TextView textViewWind;
     private TextView tViewHumidity;
     private TextView tViewPressure;
@@ -147,6 +148,7 @@ public class FragmentMain extends Fragment {
     private void displayWeather(WeatherRequest weatherRequest){
         String temperatureValue = String.format(Locale.getDefault(), "+%.0f", weatherRequest.getMain().getTemp());
         tViewTemperature.setText(temperatureValue);
+        thermometerView.setLevel((int) (50+weatherRequest.getMain().getTemp()));
         tViewCiy.setText(weatherRequest.getName());
         tViewWeather.setText(weatherRequest.getWeather()[0].getDescription());
         String pressureText = getString(R.string.pressure)+" "
@@ -215,5 +217,6 @@ public class FragmentMain extends Fragment {
         tViewHumidity = view.findViewById(R.id.tViewHumidity);
         textViewWind = view.findViewById(R.id.textViewWind);
         iViewIcons = view.findViewById(R.id.iViewIcons);
+        thermometerView = view.findViewById(R.id.thermometerView);
     }
 }
