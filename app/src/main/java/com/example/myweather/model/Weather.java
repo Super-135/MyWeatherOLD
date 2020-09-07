@@ -1,9 +1,18 @@
 package com.example.myweather.model;
 
 public class Weather {
+    private int id;
     private String main;
     private String description;
     private String icon;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
