@@ -51,6 +51,9 @@
     <string name="menu_about_the_developer">About the developer</string>
     <string name="share_the_weather">Share the weather</string>
     <string name="hello_blank_fragment">Hi! I heve been programming in Android</string>
+    <string name="title_alert_dialog">Error!</string>
+    <string name="message_allert_dialog">There is no Internet access</string>
+    <string name="button_ok">ОК</string>
 
 
 </resources>

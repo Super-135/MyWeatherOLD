@@ -1,5 +1,6 @@
 package com.example.myweather.ui.home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.myweather.R;
+import com.example.myweather.Thermometer;
+import com.example.myweather.model.WeatherRequest;
+import com.example.myweather.model.WeatherRequestForView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.example.myweather.R;
-import com.example.myweather.model.WeatherRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,10 +30,12 @@ import javax.net.ssl.HttpsURLConnection;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 public class FragmentMain extends Fragment {
 
+    private Thermometer thermometerView;
     private TextView textViewWind;
     private TextView tViewHumidity;
     private TextView tViewPressure;
@@ -58,47 +63,80 @@ public class FragmentMain extends Fragment {
         findView(view);
         setOniViewCurrent();
         SetOnSelectCity();
-        getWeather();
+        getWeatherTread();
     }
 
-    private void getWeather() {
+
+    private void getWeatherTread() {
+        final Handler handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Gson gson = new Gson();
+                final WeatherRequest weatherRequest = gson.fromJson(getWeather(), WeatherRequest.class);
+                if (weatherRequest != null) {
+                    final WeatherRequestForView weatherRequestForView = new WeatherRequestForView(weatherRequest, getActivity().getApplicationContext());
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayWeather(weatherRequestForView);
+                        }
+                    });
+
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            clickAlertDialogNoInternetAccess();
+                        }
+                    });
+
+                }
+            }
+        }).start();
+    }
+
+    private String getWeather() {
         try {
             final URL uri = new URL(WEATHER_URL_PREFIX + "lang="+ lang + WEATHER_URL_POSTFIX + "c7f79a8f3dde991ba5771bba492c90d7");
-            final Handler handler = new Handler(); // Запоминаем основной поток
-            new Thread(new Runnable() {
-                public void run() {
-                    HttpsURLConnection urlConnection = null;
-                    try {
-                        urlConnection = (HttpsURLConnection) uri.openConnection();
-                        urlConnection.setRequestMethod("GET"); // установка метода получения данных -GET
-                        urlConnection.setReadTimeout(10000); // установка таймаута - 10 000 миллисекунд
-                        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())); // читаем  данные в поток
-                        String result = getLines(in);
-                        // преобразование данных запроса в модель
-                        Gson gson = new Gson();
-                        final WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
-                        // Возвращаемся к основному потоку
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                displayWeather(weatherRequest);
-                            }
-                        });
-                    } catch (Exception e) {
-                        Log.e(TAG, "Fail connection", e);
-                        e.printStackTrace();
-                    } finally {
-                        if (null != urlConnection) {
-                            urlConnection.disconnect();
-                        }
-                    }
+            HttpsURLConnection urlConnection = null;
+            try {
+                urlConnection = (HttpsURLConnection) uri.openConnection();
+                urlConnection.setRequestMethod("GET"); // установка метода получения данных -GET
+                urlConnection.setReadTimeout(10000); // установка таймаута - 10 000 миллисекунд
+                BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())); // читаем  данные в поток
+                return getLines(in);
+            } catch (Exception e) {
+                Log.e(TAG, "Fail connection", e);
+                e.printStackTrace();
+                return "";
+            } finally {
+                if (null != urlConnection) {
+                    urlConnection.disconnect();
                 }
-            }).start();
+            }
         } catch (MalformedURLException e) {
             Log.e(TAG, "Fail URI", e);
             e.printStackTrace();
+            return "";
         }
     }
+
+
+    private void clickAlertDialogNoInternetAccess() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(FragmentMain.this.getContext());
+        builder.setTitle(R.string.title_alert_dialog)
+                .setMessage(R.string.message_allert_dialog)
+                .setIcon(R.drawable.wifioff)
+                .setPositiveButton(R.string.button_ok,
+                        new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 
     private String getLines(BufferedReader in) {
         StringBuilder rawData = new StringBuilder(1024);
@@ -120,24 +158,15 @@ public class FragmentMain extends Fragment {
         return rawData.toString();
     }
 
-    private void displayWeather(WeatherRequest weatherRequest){
-        String temperatureValue = String.format(Locale.getDefault(), "+%.0f", weatherRequest.getMain().getTemp());
-        tViewTemperature.setText(temperatureValue);
-        tViewCiy.setText(weatherRequest.getName());
-        tViewWeather.setText(weatherRequest.getWeather()[0].getDescription());
-        String pressureText = getString(R.string.pressure)+" "
-                + String.format(Locale.getDefault(),"%.0f", (weatherRequest.getMain().getPressure()*0.750064))
-                +" "+getString(R.string.pressure1);
-        tViewPressure.setText(pressureText);
-        String humidityStr = getString(R.string.humidity)+" "
-                + String.format(Locale.getDefault(), "%d", weatherRequest.getMain().getHumidity())
-                +" "+getString(R.string.humidity1);
-        tViewHumidity.setText(humidityStr);
-        String windSpeedStr = getString(R.string.wind)+" "
-                + String.format(Locale.getDefault(), "%.3f", weatherRequest.getWind().getSpeed())
-                +" "+getString(R.string.wind1);
-        textViewWind.setText(windSpeedStr);
-        String icon = weatherRequest.getWeather()[0].getIcon();
+    private void displayWeather(WeatherRequestForView weatherRequestForView){
+        tViewTemperature.setText(weatherRequestForView.getTemperatureStr());
+        thermometerView.setLevel((int) (50+weatherRequestForView.getTemperatureF()));
+        tViewCiy.setText(weatherRequestForView.getCity());
+        tViewWeather.setText(weatherRequestForView.getWeather());
+        tViewPressure.setText(weatherRequestForView.getPressure());
+        tViewHumidity.setText(weatherRequestForView.getHumidity());
+        textViewWind.setText(weatherRequestForView.getWindSpeed());
+        String icon = weatherRequestForView.getIcon();
         if (icon.equals("01d") || icon.equals("01n")) {
             iViewIcons.setImageResource(R.drawable.sunny_sunshine_weather_64);
         } else if (icon.equals("02d") || icon.equals("02n")) {
@@ -171,6 +200,7 @@ public class FragmentMain extends Fragment {
     private void setOniViewCurrent() {
         btnSendWeather.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
@@ -190,5 +220,6 @@ public class FragmentMain extends Fragment {
         tViewHumidity = view.findViewById(R.id.tViewHumidity);
         textViewWind = view.findViewById(R.id.textViewWind);
         iViewIcons = view.findViewById(R.id.iViewIcons);
+        thermometerView = view.findViewById(R.id.thermometerView);
     }
 }

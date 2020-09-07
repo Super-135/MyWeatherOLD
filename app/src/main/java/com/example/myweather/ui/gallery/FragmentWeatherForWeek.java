@@ -1,5 +1,6 @@
 package com.example.myweather.ui.gallery;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -7,12 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
 import com.example.myweather.IRVOnItemClick;
 import com.example.myweather.R;
 import com.example.myweather.RecyclerDateAdapter;
 import com.example.myweather.model.Daily;
 import com.example.myweather.model.ForecastWeek;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,6 +27,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,6 +80,12 @@ public class FragmentWeatherForWeek extends Fragment implements IRVOnItemClick {
                     } catch (Exception e) {
                         Log.e(TAG, "Fail connection", e);
                         e.printStackTrace();
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                clickAlertDialogNoInternetAccess();
+                            }
+                        });
                     } finally {
                         if (null != urlConnection) {
                             urlConnection.disconnect();
@@ -89,6 +97,20 @@ public class FragmentWeatherForWeek extends Fragment implements IRVOnItemClick {
             Log.e(TAG, "Fail URI", e);
             e.printStackTrace();
         }
+    }
+
+    private void clickAlertDialogNoInternetAccess() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(FragmentWeatherForWeek.this.requireContext());
+        builder.setTitle(R.string.title_alert_dialog)
+                .setMessage(R.string.message_allert_dialog)
+                .setIcon(R.drawable.wifioff)
+                .setPositiveButton(R.string.button_ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private String getLines(BufferedReader in) {
