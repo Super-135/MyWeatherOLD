@@ -1,10 +1,12 @@
 package com.example.myweather.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Weather {
-    private int id;
-    private String main;
-    private String description;
-    private String icon;
+    @SerializedName("id") private int id;
+    @SerializedName("main") private String main;
+    @SerializedName("description") private String description;
+    @SerializedName("icon") private String icon;
 
     public int getId() {
         return id;

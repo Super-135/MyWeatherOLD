@@ -54,6 +54,7 @@
     <string name="title_alert_dialog">Error!</string>
     <string name="message_allert_dialog">There is no Internet access</string>
     <string name="button_ok">ОК</string>
+    <string name="network_error">Check your internet connection</string>
 
 
 </resources>

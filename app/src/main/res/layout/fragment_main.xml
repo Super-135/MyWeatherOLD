@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/side_nav_bar"
     tools:context=".MainActivity">
 
@@ -51,13 +52,13 @@
         android:id="@+id/tViewWeather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:text="@string/now_sunny"
         android:textColor="@color/cardview_light_background_main"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/tViewTemperature"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/iViewIcons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iViewIcons" />
 
     <TextView
@@ -132,4 +133,15 @@
         app:layout_constraintVertical_bias="0.138"
         />
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/tViewLoad"
+        android:layout_width="376dp"
+        android:layout_height="245dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.587"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSendWeather"
+        app:layout_constraintVertical_bias="0.565"
+        fresco:placeholderImage="@drawable/search1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

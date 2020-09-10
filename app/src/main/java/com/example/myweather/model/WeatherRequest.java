@@ -1,18 +1,20 @@
 package com.example.myweather.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class WeatherRequest {
-    private Coord coord;
-    private Weather[] weather;
-    private Main main;
-    private Wind wind;
-    private Clouds clouds;
-    private String name;
-    private String base;
-    private Integer visibility;
-    private long dt;
-    private int timezone;
-    private int id;
-    private Integer cod;
+    @SerializedName("cord") private Coord coord;
+    @SerializedName("weather") private Weather[] weather;
+    @SerializedName("main") private Main main;
+    @SerializedName("wind") private Wind wind;
+    @SerializedName("clouds") private Clouds clouds;
+    @SerializedName("name") private String name;
+    @SerializedName("base") private String base;
+    @SerializedName("visibility") private Integer visibility;
+    @SerializedName("dt") private  long dt;
+    @SerializedName("timezone") private int timezone;
+    @SerializedName("id") private int id;
+    @SerializedName("cod") private Integer cod;
 
     public long getDt() {
         return dt;

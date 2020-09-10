@@ -44,6 +44,7 @@
     <string name="title_alert_dialog">Ошибка!</string>
     <string name="message_allert_dialog">Нет доступа к интернету</string>
     <string name="button_ok">ОК</string>
+    <string name="network_error">Check your internet connection</string>
 
 
 </resources>

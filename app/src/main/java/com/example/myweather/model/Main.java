@@ -1,27 +1,13 @@
 package com.example.myweather.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Main {
-    private float temp;
-    private int pressure;
-    private int humidity;
-    private float temp_min;
-    private float temp_max;
-
-    public float getTemp_min() {
-        return temp_min;
-    }
-
-    public void setTemp_min(float temp_min) {
-        this.temp_min = temp_min;
-    }
-
-    public float getTemp_max() {
-        return temp_max;
-    }
-
-    public void setTemp_max(float temp_max) {
-        this.temp_max = temp_max;
-    }
+    @SerializedName("temp") private float temp;
+    @SerializedName("pressure") private int pressure;
+    @SerializedName("humidity") private int humidity;
+    @SerializedName("temp_min") private float tempMin;
+    @SerializedName("temp_max") private float tempMax;
 
     public float getTemp() {
         return temp;
@@ -45,5 +31,21 @@ public class Main {
 
     public void setHumidity(int humidity) {
         this.humidity = humidity;
+    }
+
+    public float getTempMin() {
+        return tempMin;
+    }
+
+    public void setTempMin(float tempMin) {
+        this.tempMin = tempMin;
+    }
+
+    public float getTempMax() {
+        return tempMax;
+    }
+
+    public void setTempMax(float tempMax) {
+        this.tempMax = tempMax;
     }
 }
