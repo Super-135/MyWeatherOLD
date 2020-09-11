@@ -1,36 +1,39 @@
 package com.example.myweather.ui.home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.myweather.R;
+import com.example.myweather.Thermometer;
+import com.example.myweather.model.OpenWeather;
+import com.example.myweather.model.WeatherRequest;
+import com.example.myweather.model.WeatherRequestForView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
-import com.example.myweather.R;
-import com.example.myweather.model.WeatherRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Locale;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FragmentMain extends Fragment {
 
+    private Thermometer thermometerView;
     private TextView textViewWind;
     private TextView tViewHumidity;
     private TextView tViewPressure;
@@ -41,9 +44,7 @@ public class FragmentMain extends Fragment {
     private ImageView iViewCity;
     private TextView tViewCiy;
     private String lang;
-    private static final String TAG = "WEATHER";
-    private static final String WEATHER_URL_PREFIX = "https://api.openweathermap.org/data/2.5/weather?q=Москва&";
-    private static final String WEATHER_URL_POSTFIX = "&units=metric&appid=";
+    private String city = "Москва";
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,47 +59,55 @@ public class FragmentMain extends Fragment {
         findView(view);
         setOniViewCurrent();
         SetOnSelectCity();
-        getWeather();
+        getWeatherTread();
     }
 
-    private void getWeather() {
-        try {
-            final URL uri = new URL(WEATHER_URL_PREFIX + "lang="+ lang + WEATHER_URL_POSTFIX + "c7f79a8f3dde991ba5771bba492c90d7");
-            final Handler handler = new Handler(); // Запоминаем основной поток
-            new Thread(new Runnable() {
-                public void run() {
-                    HttpsURLConnection urlConnection = null;
-                    try {
-                        urlConnection = (HttpsURLConnection) uri.openConnection();
-                        urlConnection.setRequestMethod("GET"); // установка метода получения данных -GET
-                        urlConnection.setReadTimeout(10000); // установка таймаута - 10 000 миллисекунд
-                        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())); // читаем  данные в поток
-                        String result = getLines(in);
-                        // преобразование данных запроса в модель
-                        Gson gson = new Gson();
-                        final WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
-                        // Возвращаемся к основному потоку
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                displayWeather(weatherRequest);
-                            }
-                        });
-                    } catch (Exception e) {
-                        Log.e(TAG, "Fail connection", e);
-                        e.printStackTrace();
-                    } finally {
-                        if (null != urlConnection) {
-                            urlConnection.disconnect();
+
+    private void getWeatherTread() {
+        OpenWeather.getInstance().getAPI().loadWeather(city + ",ru",
+                "metric", lang, "c7f79a8f3dde991ba5771bba492c90d7")
+                .enqueue(new Callback<WeatherRequest>() {
+                    @Override
+                    public void onResponse(@NonNull Call<WeatherRequest> call,
+                                           @NonNull Response<WeatherRequest> response) {
+                        if (response.body() != null && response.isSuccessful()) {
+                            final WeatherRequestForView weatherRequestForView = new WeatherRequestForView(response.body(), getActivity().getApplicationContext());
+                            displayWeather(weatherRequestForView);
+                        } else {
+                            //Похоже, код у нас не в диапазоне [200..300) и случилась ошибка
+                            //обрабатываем ее
+                            if(response.code() == 500) {
+                                //ой, случился Internal Server Error. Решаем проблему
+                            } else if(response.code() == 401) {
+                                //не авторизованы, что-то с этим делаем.
+                                //например, открываем страницу с логинкой
+                            }// и так далее
                         }
                     }
-                }
-            }).start();
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "Fail URI", e);
-            e.printStackTrace();
-        }
+
+                    //сбой при интернет подключении
+                    @Override
+                    public void onFailure(Call<WeatherRequest> call, Throwable t) {
+                        clickAlertDialogNoInternetAccess();
+                    }
+                });
     }
+
+
+    private void clickAlertDialogNoInternetAccess() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(FragmentMain.this.getContext());
+        builder.setTitle(R.string.title_alert_dialog)
+                .setMessage(R.string.message_allert_dialog)
+                .setIcon(R.drawable.wifioff)
+                .setPositiveButton(R.string.button_ok,
+                        new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 
     private String getLines(BufferedReader in) {
         StringBuilder rawData = new StringBuilder(1024);
@@ -120,24 +129,15 @@ public class FragmentMain extends Fragment {
         return rawData.toString();
     }
 
-    private void displayWeather(WeatherRequest weatherRequest){
-        String temperatureValue = String.format(Locale.getDefault(), "+%.0f", weatherRequest.getMain().getTemp());
-        tViewTemperature.setText(temperatureValue);
-        tViewCiy.setText(weatherRequest.getName());
-        tViewWeather.setText(weatherRequest.getWeather()[0].getDescription());
-        String pressureText = getString(R.string.pressure)+" "
-                + String.format(Locale.getDefault(),"%.0f", (weatherRequest.getMain().getPressure()*0.750064))
-                +" "+getString(R.string.pressure1);
-        tViewPressure.setText(pressureText);
-        String humidityStr = getString(R.string.humidity)+" "
-                + String.format(Locale.getDefault(), "%d", weatherRequest.getMain().getHumidity())
-                +" "+getString(R.string.humidity1);
-        tViewHumidity.setText(humidityStr);
-        String windSpeedStr = getString(R.string.wind)+" "
-                + String.format(Locale.getDefault(), "%.3f", weatherRequest.getWind().getSpeed())
-                +" "+getString(R.string.wind1);
-        textViewWind.setText(windSpeedStr);
-        String icon = weatherRequest.getWeather()[0].getIcon();
+    private void displayWeather(WeatherRequestForView weatherRequestForView){
+        tViewTemperature.setText(weatherRequestForView.getTemperatureStr());
+        thermometerView.setLevel((int) (50+weatherRequestForView.getTemperatureF()));
+        tViewCiy.setText(weatherRequestForView.getCity());
+        tViewWeather.setText(weatherRequestForView.getWeather());
+        tViewPressure.setText(weatherRequestForView.getPressure());
+        tViewHumidity.setText(weatherRequestForView.getHumidity());
+        textViewWind.setText(weatherRequestForView.getWindSpeed());
+        String icon = weatherRequestForView.getIcon();
         if (icon.equals("01d") || icon.equals("01n")) {
             iViewIcons.setImageResource(R.drawable.sunny_sunshine_weather_64);
         } else if (icon.equals("02d") || icon.equals("02n")) {
@@ -171,6 +171,7 @@ public class FragmentMain extends Fragment {
     private void setOniViewCurrent() {
         btnSendWeather.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
@@ -190,5 +191,10 @@ public class FragmentMain extends Fragment {
         tViewHumidity = view.findViewById(R.id.tViewHumidity);
         textViewWind = view.findViewById(R.id.textViewWind);
         iViewIcons = view.findViewById(R.id.iViewIcons);
+        thermometerView = view.findViewById(R.id.thermometerView);
+
+        Uri uri = Uri.parse("https://images.unsplash.com/photo-1553984840-ec965a23cddd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2089&q=80");
+        SimpleDraweeView tViewLoad = (SimpleDraweeView) view.findViewById(R.id.tViewLoad);
+        tViewLoad.setImageURI(uri);
     }
 }

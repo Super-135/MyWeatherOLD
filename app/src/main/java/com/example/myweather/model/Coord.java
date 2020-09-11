@@ -1,8 +1,10 @@
 package com.example.myweather.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Coord {
-    private float lat;
-    private float lon;
+    @SerializedName("lat") private float lat;
+    @SerializedName("lon") private float lon;
 
     public float getLon() {
         return lon;
