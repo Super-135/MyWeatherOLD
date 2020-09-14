@@ -13,10 +13,13 @@
             android:icon="@drawable/list_on"
             android:title="@string/menu_forecast_for_the_week" />
         <item
+            android:id="@+id/nav_city_selection"
+            android:icon="@drawable/gps"
+            android:title="@string/сity_selection" />
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/settings2"
             android:title="@string/menu_settings" />
-
     </group>
     <item
         android:id="@+id/nav_about_the_developer"

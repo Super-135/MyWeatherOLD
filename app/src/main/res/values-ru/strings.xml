@@ -41,6 +41,15 @@
     <string name="menu_about_the_developer">О разработчике</string>
     <string name="share_the_weather">Поделиться погодой</string>
     <string name="hello_blank_fragment">Привет! Я программирую на андроид.</string>
+    <string name="title_alert_dialog">Ошибка!</string>
+    <string name="message_allert_dialog">Нет доступа к интернету</string>
+    <string name="button_ok">ОК</string>
+    <string name="network_error">Check your internet connection</string>
+    <string name="сity_selection">Выбор города</string>
+    <string name="current_place_setting">Выбрать город</string>
+    <string name="choose_place">Выбрать город</string>
+    <string name="enter_your_city">Укажите город</string>
+    <string name="default_value">Значение по умолчанию</string>
 
 
 </resources>

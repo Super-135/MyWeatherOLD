@@ -22,6 +22,11 @@
         android:name="com.example.myweather.ui.slideshow.SettingsActivity$SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/settings_activity" />
+    <fragment
+        android:id="@+id/nav_city_selection"
+        android:name="com.example.myweather.ui.citySelection.CitySelectionScreen"
+        android:label="@string/сity_selection"
+        tools:layout="@layout/activity_city_selection_screen" />
 
     <fragment
         android:id="@+id/nav_about_the_developer"

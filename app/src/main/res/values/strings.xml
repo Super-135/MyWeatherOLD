@@ -51,6 +51,15 @@
     <string name="menu_about_the_developer">About the developer</string>
     <string name="share_the_weather">Share the weather</string>
     <string name="hello_blank_fragment">Hi! I heve been programming in Android</string>
+    <string name="title_alert_dialog">Error!</string>
+    <string name="message_allert_dialog">There is no Internet access</string>
+    <string name="button_ok">ОК</string>
+    <string name="network_error">Check your internet connection</string>
+    <string name="сity_selection">City selection</string>
+    <string name="current_place_setting">Current place</string>
+    <string name="choose_place">Choose a place</string>
+    <string name="enter_your_city">Enter your city</string>
+    <string name="default_value">Default value</string>
 
 
 </resources>

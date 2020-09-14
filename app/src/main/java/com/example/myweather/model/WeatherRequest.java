@@ -1,12 +1,68 @@
 package com.example.myweather.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class WeatherRequest {
-    private Coord coord;
-    private Weather[] weather;
-    private Main main;
-    private Wind wind;
-    private Clouds clouds;
-    private String name;
+    @SerializedName("cord") private Coord coord;
+    @SerializedName("weather") private Weather[] weather;
+    @SerializedName("main") private Main main;
+    @SerializedName("wind") private Wind wind;
+    @SerializedName("clouds") private Clouds clouds;
+    @SerializedName("name") private String name;
+    @SerializedName("base") private String base;
+    @SerializedName("visibility") private Integer visibility;
+    @SerializedName("dt") private  long dt;
+    @SerializedName("timezone") private int timezone;
+    @SerializedName("id") private int id;
+    @SerializedName("cod") private Integer cod;
+
+    public long getDt() {
+        return dt;
+    }
+
+    public void setDt(long dt) {
+        this.dt = dt;
+    }
+
+    public int getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(int timezone) {
+        this.timezone = timezone;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Integer getCod() {
+        return cod;
+    }
+
+    public void setCod(Integer cod) {
+        this.cod = cod;
+    }
+
+    public Integer getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(Integer visibility) {
+        this.visibility = visibility;
+    }
+
+    public String getBase() {
+        return base;
+    }
+
+    public void setBase(String base) {
+        this.base = base;
+    }
 
     public Coord getCoord() {
         return coord;

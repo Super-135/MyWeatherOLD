@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CitySelectionScreen">
+
+    <TextView
+        android:id="@+id/tViewCurrentPlace"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/current_place"
+        android:textColor="@android:color/background_dark"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iViewCurrent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/current_place"
+        app:layout_constraintBottom_toTopOf="@+id/tViewtFavourites"
+        app:layout_constraintEnd_toStartOf="@+id/tViewCurrentCity"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tViewCurrentPlace"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/gps" />
+
+    <TextView
+        android:id="@+id/tViewCurrentCity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/side_nav_bar"
+        android:padding="10dp"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tViewtFavourites"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintStart_toEndOf="@+id/iViewCurrent"
+        app:layout_constraintTop_toBottomOf="@+id/tViewCurrentPlace"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tViewtFavourites"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="132dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/favourites"
+        android:textColor="@android:color/background_dark"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iViewFavourites"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/tViewtFavouritesCity"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tViewtFavourites"
+        app:srcCompat="@drawable/search1"
+        android:contentDescription="@string/favourites" />
+
+    <EditText
+        android:id="@+id/tViewtFavouritesCity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/side_nav_bar"
+        android:hint="@string/select_city"
+        android:padding="10dp"
+        android:textColor="@color/cardview_light_background"
+        android:textColorHint="@color/cardview_grey_background"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintStart_toEndOf="@+id/iViewFavourites"
+        app:layout_constraintTop_toBottomOf="@+id/tViewtFavourites"
+        android:autofillHints="@string/select_city"
+        android:inputType= "textPersonName"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
