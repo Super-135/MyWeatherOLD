@@ -7,14 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.myweather.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
 public class CitySelectionScreen extends Fragment {
@@ -61,32 +59,17 @@ public class CitySelectionScreen extends Fragment {
     }
 
     private void setOniViewCurrent() {
-        iViewCurrent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext().getApplicationContext(),getString(R.string.current_place), Toast.LENGTH_SHORT).show();
-            }
-        });
         iViewFavourites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final SharedPreferences defaultPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
                 saveToPreference(defaultPrefs);
-//                FragmentMain nextFrag= new FragmentMain();
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.nav_host_fragment, nextFrag, "")
-//                        .commit();
-                // как закрыть этот фрагмент и открыть другой домашний.
+                // как закрыть этот фрагмент чтоб потом домашний открылся.
+                // ничего из фрагмента в фрагмент передовать не надо.
             }
         });
     }
 
-
-    private void setFragment(Fragment fragment) {
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.nav_host_fragment, fragment);
-        fragmentTransaction.commit();
-    }
 
 
     private void findView(View view) {

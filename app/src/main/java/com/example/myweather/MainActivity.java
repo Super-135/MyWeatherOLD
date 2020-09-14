@@ -3,7 +3,6 @@ package com.example.myweather;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.example.myweather.ui.slideshow.SettingsActivity;
@@ -12,7 +11,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -79,26 +77,33 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        handleMenuItemClick(item);
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void handleMenuItemClick(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.menu_setting: {
-                onOpenSettings();
-                break;
-            }
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        handleMenuItemClick(item);
+//        return super.onOptionsItemSelected(item);
+//    }
+//
+//    private void handleMenuItemClick(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        switch (id) {
+//            case R.id.menu_setting: {
+//                onOpenSettings();
+//                break;
+//            }
+//        }
+//    }
 
     private void onOpenSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+        super.onBackPressed();
+    }
 }
