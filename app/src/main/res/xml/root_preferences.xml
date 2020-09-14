@@ -2,18 +2,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/settings_title1">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="check_box_preference_Wind"
-            android:title="@string/windPreference" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="check_box_preference_Pressure"
-            android:title="@string/pressurePreference" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="check_box_preference_Humidity"
-            android:title="@string/humidityPreference" />
 
+        <CheckBoxPreference
+            android:key="current_place"
+            android:defaultValue="true"
+            android:title="@string/current_place_setting" />
+        <EditTextPreference
+            android:defaultValue="@string/default_value"
+            android:key="edit_text_preference_1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:dependency ="current_place"
+            android:title="@string/choose_place" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -2,6 +2,7 @@ package com.example.myweather.ui.home;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,6 +48,8 @@ public class FragmentMain extends Fragment {
     private String lang;
     private String city = "Москва";
 
+
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main, container, false);
@@ -54,14 +58,30 @@ public class FragmentMain extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Вынести в отдельный класс
+        final SharedPreferences defaultPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         setRetainInstance(true);
         lang = Locale.getDefault().getISO3Language().substring(0,2);
+        readFromPreference(defaultPrefs);
         findView(view);
         setOniViewCurrent();
         SetOnSelectCity();
         getWeatherTread();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Вынести в отдельный класс
+        final SharedPreferences defaultPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        lang = Locale.getDefault().getISO3Language().substring(0,2);
+        readFromPreference(defaultPrefs);
+        setOniViewCurrent();
+        SetOnSelectCity();
+        getWeatherTread();
+
+
+    }
 
     private void getWeatherTread() {
         OpenWeather.getInstance().getAPI().loadWeather(city + ",ru",
@@ -93,7 +113,6 @@ public class FragmentMain extends Fragment {
                 });
     }
 
-
     private void clickAlertDialogNoInternetAccess() {
         AlertDialog.Builder builder = new AlertDialog.Builder(FragmentMain.this.getContext());
         builder.setTitle(R.string.title_alert_dialog)
@@ -108,6 +127,24 @@ public class FragmentMain extends Fragment {
         alert.show();
     }
 
+
+    private void saveToPreference(SharedPreferences preferences) {
+        SharedPreferences.Editor editor = preferences.edit();
+
+//        String text = inputEditText.getText().toString();
+ //       editor.putString(textKey, text);
+        editor.apply();
+    }
+
+    private void readFromPreference(SharedPreferences preferences) {
+        String textKeyCurrentPlace = "current_place";
+        String textKeyDefaultCity = "edit_text_preference_1";
+        boolean currentPlace = preferences.getBoolean(textKeyCurrentPlace, false);
+        String textCity = preferences.getString(textKeyDefaultCity, "");
+        if (currentPlace) {
+            city = textCity;
+        }
+    }
 
     private String getLines(BufferedReader in) {
         StringBuilder rawData = new StringBuilder(1024);

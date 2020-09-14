@@ -56,6 +56,10 @@
     <string name="button_ok">ОК</string>
     <string name="network_error">Check your internet connection</string>
     <string name="сity_selection">City selection</string>
+    <string name="current_place_setting">Current place</string>
+    <string name="choose_place">Choose a place</string>
+    <string name="enter_your_city">Enter your city</string>
+    <string name="default_value">Default value</string>
 
 
 </resources>
